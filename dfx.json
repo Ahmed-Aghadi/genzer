@@ -1,49 +1,50 @@
 {
-  "canisters": {
-    "ledger": {
-      "type": "custom",
-      "candid": "ledger.public.did",
-      "wasm": "ledger.wasm",
-      "remote": {
-        "candid": "ledger.public.did",
-        "id": {
-          "ic": "ryjl3-tyaaa-aaaaa-aaaba-cai"
+    "canisters": {
+        "internet_identity": {
+            "type": "custom",
+            "candid": "internet_identity.did",
+            "wasm": "internet_identity.wasm",
+            "build": "./scripts/download-did-and-wasm"
+        },
+        "ledger": {
+            "type": "custom",
+            "candid": "ledger.public.did",
+            "wasm": "ledger.wasm",
+            "remote": {
+                "candid": "ledger.public.did",
+                "id": {
+                    "ic": "ryjl3-tyaaa-aaaaa-aaaba-cai"
+                }
+            }
+        },
+        "genzer_backend": {
+            "main": "src/genzer_backend/main.mo",
+            "type": "motoko"
+        },
+        "genzer_frontend": {
+            "dependencies": ["genzer_backend"],
+            "frontend": {
+                "entrypoint": "src/genzer_frontend/src/index.html"
+            },
+            "source": ["src/genzer_frontend/assets", "dist/genzer_frontend/"],
+            "type": "assets"
         }
-      }
     },
-    "genzer_backend": {
-      "main": "src/genzer_backend/main.mo",
-      "type": "motoko"
+    "defaults": {
+        "build": {
+            "args": "",
+            "packtool": ""
+        },
+        "replica": {
+            "subnet_type": "system"
+        }
     },
-    "genzer_frontend": {
-      "dependencies": [
-        "genzer_backend"
-      ],
-      "frontend": {
-        "entrypoint": "src/genzer_frontend/src/index.html"
-      },
-      "source": [
-        "src/genzer_frontend/assets",
-        "dist/genzer_frontend/"
-      ],
-      "type": "assets"
-    }
-  },
-  "defaults": {
-    "build": {
-      "args": "",
-      "packtool": ""
+    "dfx": "0.11.2",
+    "networks": {
+        "local": {
+            "bind": "127.0.0.1:8000",
+            "type": "ephemeral"
+        }
     },
-    "replica": {
-      "subnet_type":"system"
-    }
-  },
-  "dfx": "0.11.2",
-  "networks": {
-    "local": {
-      "bind": "127.0.0.1:8000",
-      "type": "ephemeral"
-    }
-  },
-  "version": 1
+    "version": 1
 }

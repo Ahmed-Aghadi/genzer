@@ -3,6 +3,7 @@ import { Text, Group, Button, createStyles } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { IconCloudUpload, IconX, IconDownload } from "@tabler/icons";
 import { CardsCarousel } from "./CardsCarousel";
+import { showNotification } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
     wrapper: {
@@ -30,19 +31,22 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function DropzoneButton({ files, setFiles }) {
+export function DropzoneButton({ files, setFiles, maxFiles }) {
     const { classes, theme } = useStyles();
     const openRef = useRef(null);
+    // console.log(files);
 
+    // {
+    //     image: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+    //     title: "Best forests to visit in North America",
+    //     category: "nature",
+    // },
     const data = files.map((file, index) => {
         const imageUrl = URL.createObjectURL(file);
-        return (
-            <Image
-                key={index}
-                src={imageUrl}
-                imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-            />
-        );
+        return {
+            index: index,
+            image: imageUrl,
+        };
     });
 
     return (
@@ -51,7 +55,21 @@ export function DropzoneButton({ files, setFiles }) {
                 <Dropzone
                     openRef={openRef}
                     onDrop={(e) => {
-                        console.log(e);
+                        // console.log(e);
+                        if (e.length > maxFiles) {
+                            showNotification({
+                                id: "hello-there",
+                                // onClose: () => console.log("unmounted"),
+                                // onOpen: () => console.log("mounted"),
+                                autoClose: 5000,
+                                title: "Cannot Upload More Than 5 Images",
+                                color: "red",
+                                icon: <IconX />,
+                                className: "my-notification-class",
+                                loading: false,
+                            });
+                            return;
+                        }
                         setFiles(e);
                     }}
                     className={classes.dropzone}
@@ -113,7 +131,9 @@ export function DropzoneButton({ files, setFiles }) {
                 </Button>
             </div>
 
-            <CardsCarousel />
+            {data && data.length > 0 && (
+                <CardsCarousel data={data} src={false} />
+            )}
         </>
     );
 }
