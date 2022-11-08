@@ -15,6 +15,7 @@ import {
     IconCheck,
     IconMessageCircle,
     IconPhoto,
+    IconNote,
 } from "@tabler/icons";
 import {
     createStyles,
@@ -45,7 +46,7 @@ function Profile() {
 
     const handleLoad = async () => {
         const authClient = await AuthClient.create();
-        if (!(await authClient.isAuthenticated())) {
+        if (!userId && !(await authClient.isAuthenticated())) {
             setIsIIConnected(false);
             showNotification({
                 id: "hello-there",
@@ -116,13 +117,13 @@ function Profile() {
                         <Tabs.List>
                             <Tabs.Tab
                                 value="posts"
-                                icon={<IconPhoto size={14} />}
+                                icon={<IconNote size={14} />}
                             >
                                 Posts
                             </Tabs.Tab>
                             <Tabs.Tab
                                 value="nfts"
-                                icon={<IconMessageCircle size={14} />}
+                                icon={<IconPhoto size={14} />}
                             >
                                 NFTs
                             </Tabs.Tab>

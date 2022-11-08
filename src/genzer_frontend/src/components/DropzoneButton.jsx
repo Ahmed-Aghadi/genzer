@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { Text, Group, Button, createStyles } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { IconCloudUpload, IconX, IconDownload } from "@tabler/icons";
@@ -41,13 +41,18 @@ export function DropzoneButton({ files, setFiles, maxFiles }) {
     //     title: "Best forests to visit in North America",
     //     category: "nature",
     // },
-    const data = files.map((file, index) => {
-        const imageUrl = URL.createObjectURL(file);
-        return {
-            index: index,
-            image: imageUrl,
-        };
-    });
+
+    // image doesn't load unnecessarily
+    const data = useCallback(
+        files.map((file, index) => {
+            const imageUrl = URL.createObjectURL(file);
+            return {
+                index: index,
+                image: imageUrl,
+            };
+        }),
+        [files]
+    );
 
     return (
         <>
@@ -109,14 +114,13 @@ export function DropzoneButton({ files, setFiles, maxFiles }) {
                         <Text align="center" weight={700} size="lg" mt="xl">
                             <Dropzone.Accept>Drop files here</Dropzone.Accept>
                             <Dropzone.Reject>
-                                Pdf file less than 30mb
+                                At max 5 images can be uploaded
                             </Dropzone.Reject>
-                            <Dropzone.Idle>Upload resume</Dropzone.Idle>
+                            <Dropzone.Idle>Upload images</Dropzone.Idle>
                         </Text>
                         <Text align="center" size="sm" mt="xs" color="dimmed">
-                            Drag&apos;n&apos;drop files here to upload. We can
-                            accept only <i>.pdf</i> files that are less than
-                            30mb in size.
+                            Drag&apos;n&apos;drop files here to upload. At max 5
+                            images can be uploaded
                         </Text>
                     </div>
                 </Dropzone>

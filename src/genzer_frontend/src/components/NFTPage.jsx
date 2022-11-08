@@ -56,10 +56,10 @@ function NFTPage() {
     const [loading, setLoading] = useState(true);
     const [found, setFound] = useState(false);
     useEffect(() => {
-        fetchFromPost();
+        fetchFromNFT();
     }, []);
 
-    const fetchFromPost = async () => {
+    const fetchFromNFT = async () => {
         const authClient = await AuthClient.create();
         const identity = await authClient.getIdentity();
 
@@ -167,12 +167,14 @@ function NFTPage() {
                             {description}
                         </Text>
 
-                        <Image
-                            sx={{ maxWidth: "lg", maxHeight: "lg" }}
-                            fit="contain"
-                            src={image}
-                            // height={180}
-                        />
+                        <Center>
+                            <Image
+                                sx={{ maxWidth: "80%" }}
+                                fit="contain"
+                                src={image}
+                                // height={180}
+                            />
+                        </Center>
 
                         <Center mt="lg">
                             <Badge
